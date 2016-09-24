@@ -8,7 +8,7 @@
   "files": [
     "index.js"
   ],
-  "keywords":[
+  "keywords": [
     "fly",
     "fly-plugin",
     "shell"
@@ -28,6 +28,7 @@
     "url": "http://github.com/lukeed"
   },
   "dependencies": {
+    "execa": "^0.4.0"
   },
   "devDependencies": {
     "eslint": "^1.10.0",
