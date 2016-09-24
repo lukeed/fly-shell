@@ -1,4 +1,4 @@
-# fly-shell [![npm package][npm-ver-link]][releases] [![][travis-badge]][travis-link]
+# fly-shell [![npm package][npm-ver-link]][npm-pkg-link] [![][travis-badge]][travis-link]
 > Execute shell commands with Fly
 
 ## Install
@@ -81,9 +81,7 @@ exports.default = function * () {
 
 MIT © [Luke Edwards](https://lukeed.com)
 
-[releases]:     https://github.com/lukeed/fly-shell/releases
 [npm-pkg-link]: https://www.npmjs.org/package/fly-shell
 [npm-ver-link]: https://img.shields.io/npm/v/fly-shell.svg?style=flat-square
-[dl-badge]:     http://img.shields.io/npm/dm/fly-shell.svg?style=flat-square
 [travis-link]:  https://travis-ci.org/lukeed/fly-shell
 [travis-badge]: http://img.shields.io/travis/lukeed/fly-shell.svg?style=flat-square
