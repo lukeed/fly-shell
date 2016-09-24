@@ -1,4 +1,5 @@
 var exec = require('execa').shell;
+
 var NAME = 'fly-shell';
 
 module.exports = function () {
@@ -14,9 +15,7 @@ module.exports = function () {
 			var c = cmd.replace(/\$file/gi, str);
 			// pass all args to execa
 			return exec.apply(self, [c, args, opts]).then(function (res) {
-				var str = NAME + ':' + (isGlob ? '\n\t' : ' ');
-				str += res.stdout.replace(/\n/g, isGlob ? '\n\t' : '\n');
-				self.log(str);
+				self.log(NAME + ':' + (isGlob ? '\n\t' : ' ') + res.stdout.replace(/\n/g, isGlob ? '\n\t' : '\n'));
 			}).catch(function (err) {
 				self.emit('plugin_error', {
 					plugin: NAME,
