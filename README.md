@@ -1,46 +1,87 @@
-<div align="center">
-  <a href="http://github.com/flyjs/fly">
-    <img width=200px  src="https://cloud.githubusercontent.com/assets/8317250/8733685/0be81080-2c40-11e5-98d2-c634f076ccd7.png">
-  </a>
-</div>
+# fly-shell [![npm package][npm-ver-link]][releases] [![][travis-badge]][travis-link]
+> Execute shell commands with Fly
 
-> [Shell](https://github.com/lukeed/fly-shell) plugin for _[Fly][fly]_.
-
-[![][fly-badge]][fly]
-[![npm package][npm-ver-link]][releases]
-[![][dl-badge]][npm-pkg-link]
-[![][travis-badge]][travis-link]
-[![][mit-badge]][mit]
-
-## Usage
-> Check out the [documentation](PLUGIN_DOCUMENTATION) to see the available options.
-
-### Install
+## Install
 
 ```a
-npm install -D fly-shell
+npm install --save-dev fly-shell
 ```
 
-### Example
+## API
+
+`fly-shell` has the same options as [child_process.exec](https://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback).
+
+### .shell(command, [options])
+
+#### command
+Type: `string`<br>
+Any occurrences of `$file` will be replaced with the the relevant filepath or glob pattern.
+
+#### options
+Type: `object`<br>
+See [child_process.exec](https://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback) for info.
+
+#### options.glob
+Type: `boolean`<br>
+If the command should use the glob pattern within `source()`, you must set this to `true` or `1`. See [here](#iterate-once-per-glob) for example.
+
+
+## Usage
+
+#### Iterate Once Per File
+
+You can apply a command to each file of your `glob` match. 
+
+Instances of `$file` will be replaced by the file's path.
 
 ```js
-export default function* () {
-  yield ...
+exports.default = function * () {
+  yield this.source('src/*.js')
+    .shell('cat $file')
+    //=> fly-shell: console.log('this is src/a.js')
+    //=> fly-shell: console.log('this is src/b.js')
+    //=> fly-shell: console.log('this is src/c.js')
+    .dist('dist');
+}
+```
+
+#### Iterate Once Per Glob
+
+You can use the current glob within your shell command.
+
+> **Note:** Currently, only one glob pattern is supported.
+
+Instances of `$file` will be replaced by the glob:
+
+```js
+exports.default = function * () {
+  yield this.source('src/*.js')
+    .shell('cat $file', {glob: true})
+    //=> fly-shell: 
+    //=>     console.log('this is src/a.js')
+    //=>     console.log('this is src/b.js')
+    //=>     console.log('this is src/c.js')
+    .dist('dist');
+}
+```
+
+#### Passing Arguments
+
+Of course, command arguments may be passed within your [command string](#command).
+
+```js
+exports.default = function * () {
+  yield this.source('src')
+    .shell('ls -alh $file', {glob: true})
+    .dist('dist');
 }
 ```
 
 ## License
 
-[MIT][mit] © [Luke Edwards][author] et [al][contributors]
+MIT © [Luke Edwards](https://lukeed.com)
 
-
-[mit]:          http://opensource.org/licenses/MIT
-[author]:       http://github.com/lukeed
-[contributors]: https://github.com/lukeed/fly-shell/graphs/contributors
 [releases]:     https://github.com/lukeed/fly-shell/releases
-[fly]:          https://www.github.com/flyjs/fly
-[fly-badge]:    https://img.shields.io/badge/fly-JS-05B3E1.svg?style=flat-square
-[mit-badge]:    https://img.shields.io/badge/license-MIT-444444.svg?style=flat-square
 [npm-pkg-link]: https://www.npmjs.org/package/fly-shell
 [npm-ver-link]: https://img.shields.io/npm/v/fly-shell.svg?style=flat-square
 [dl-badge]:     http://img.shields.io/npm/dm/fly-shell.svg?style=flat-square
