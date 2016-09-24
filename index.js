@@ -1,34 +1,38 @@
-module.exports = function (/*debug*/) {
-  this.filter("shell", (data, options) => {
-  /**
-    @overview A filter plugin returns an object { code, map, ext }
-    which is the result of transforming the incomding data source:
+var exec = require('execa').shell;
+var NAME = 'fly-shell';
 
-      return { code, map, ext }
+module.exports = function () {
+  this.shell = function () {
+    var self = this;
+    var args = [].slice.call(arguments);
+    var opts = args.pop() || {};
+    var cmd = args.shift();
+    var isGlob = opts.glob || 0;
 
-    @example Sync filter `j` that transforms a given string into an
-    object, i.e, {code, map} where code is the result data and map
-    a sourcemap if `options.sourceMap === true`.
+    var runWith = function (str) {
+      // use file or glob
+      var c = cmd.replace(/\$file/gi, str);
+      // pass all args to execa
+      return exec.apply(self, [c, args, opts]).then(function (res) {
+        var str = NAME + ':' + (isGlob ? '\n\t' : ' ');
+        str += res.stdout.replace(/\n/g, isGlob ? '\n\t' : '\n');
+        self.log(str);
+      }).catch(function (err) {
+        self.emit('plugin_error', {
+          plugin: NAME,
+          error: err.message
+        });
+      });
+    };
 
-      const j = require("my-js-transformer")
-      const assign = require("object-assign")
-
-      module.exports = function () {
-        return this.filter("j", (data, options) => {
-          return assign({ ext: ".js"}, j.render(data.toString(), options))
-        })
-      }
-
-    @example Async filter `s` that transforms a given string and invokes
-    a callback function with an object, i.e, {css, map}.
-
-    const s = require("my-style-trasformer")
-    const assign = require("object-assign")
-
-    module.exports = function () {
-      return this.defer(s.render)(data.toString(), options).then((result) =>
-        assign({ ext: ".css"}, result))
+    if (isGlob) {
+      runWith(this._.globs[0]);
+    } else {
+      this.unwrap(function (files) {
+        files.forEach(runWith);
+      });
     }
-  */
-  })
-}
+
+    return this;
+  };
+};
