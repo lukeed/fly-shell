@@ -1,9 +1,9 @@
 var shell = require('execa').shell;
 
-var NAME = 'fly-exec';
+var NAME = 'fly-execa';
 
 module.exports = function () {
-	this.exec = function () {
+	this.execa = function () {
 		var self = this;
 		var args = [].slice.call(arguments);
 		var opts = args.pop() || {};

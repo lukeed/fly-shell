@@ -1,17 +1,17 @@
-# fly-exec [![npm package][npm-ver-link]][npm-pkg-link] [![][travis-badge]][travis-link]
+# fly-execa [![npm package][npm-ver-link]][npm-pkg-link] [![][travis-badge]][travis-link]
 > Execute shell commands with Fly
 
 ## Install
 
 ```a
-npm install --save-dev fly-exec
+npm install --save-dev fly-execa
 ```
 
 ## API
 
-`fly-exec` has the same options as [child_process.exec](https://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback).
+`fly-execa` has the same options as [child_process.exec](https://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback).
 
-### .exec(command, [options])
+### .execa(command, [options])
 
 #### command
 Type: `string`<br>
@@ -37,10 +37,10 @@ Instances of `$file` will be replaced by the file's path.
 ```js
 exports.default = function * () {
   yield this.source('src/*.js')
-    .exec('cat $file')
-    //=> fly-exec: console.log('this is src/a.js')
-    //=> fly-exec: console.log('this is src/b.js')
-    //=> fly-exec: console.log('this is src/c.js')
+    .execa('cat $file')
+    //=> fly-execa: console.log('this is src/a.js')
+    //=> fly-execa: console.log('this is src/b.js')
+    //=> fly-execa: console.log('this is src/c.js')
     .dist('dist');
 }
 ```
@@ -56,8 +56,8 @@ Instances of `$file` will be replaced by the glob:
 ```js
 exports.default = function * () {
   yield this.source('src/*.js')
-    .exec('cat $file', {glob: true})
-    //=> fly-exec: 
+    .execa('cat $file', {glob: true})
+    //=> fly-execa: 
     //=>     console.log('this is src/a.js')
     //=>     console.log('this is src/b.js')
     //=>     console.log('this is src/c.js')
@@ -72,7 +72,7 @@ Of course, command arguments may be passed within your [command string](#command
 ```js
 exports.default = function * () {
   yield this.source('src')
-    .exec('ls -alh $file', {glob: true})
+    .execa('ls -alh $file', {glob: true})
     .dist('dist');
 }
 ```
@@ -81,7 +81,7 @@ exports.default = function * () {
 
 MIT © [Luke Edwards](https://lukeed.com)
 
-[npm-pkg-link]: https://www.npmjs.org/package/fly-exec
-[npm-ver-link]: https://img.shields.io/npm/v/fly-exec.svg?style=flat-square
-[travis-link]:  https://travis-ci.org/lukeed/fly-exec
-[travis-badge]: http://img.shields.io/travis/lukeed/fly-exec.svg?style=flat-square
+[npm-pkg-link]: https://www.npmjs.org/package/fly-execa
+[npm-ver-link]: https://img.shields.io/npm/v/fly-execa.svg?style=flat-square
+[travis-link]:  https://travis-ci.org/lukeed/fly-execa
+[travis-badge]: http://img.shields.io/travis/lukeed/fly-execa.svg?style=flat-square
