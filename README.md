@@ -9,7 +9,7 @@ npm install --save-dev fly-execa
 
 ## API
 
-`fly-execa` has the same options as [child_process.exec](https://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback).
+`fly-execa` uses [execa](https://github.com/sindresorhus/execa) as its `child_process` wrapper. This means it has the same options as [child_process.exec](https://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback) and shares `execa`'s [additional options](https://github.com/sindresorhus/execa#options).
 
 ### .execa(command, [options])
 
@@ -19,7 +19,7 @@ Any occurrences of `$file` will be replaced with the the relevant filepath or gl
 
 #### options
 Type: `object`<br>
-See [child_process.exec](https://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback) for info.
+See [child_process.exec](https://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback) and [execa](https://github.com/sindresorhus/execa#options) for more info.
 
 #### options.glob
 Type: `boolean`<br>
