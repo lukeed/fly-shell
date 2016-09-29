@@ -1,5 +1,5 @@
 {
-  "name": "fly-execa",
+  "name": "fly-shell",
   "version": "1.0.0",
   "description": "Execute shell commands with Fly",
   "license": "MIT",

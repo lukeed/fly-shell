@@ -1,17 +1,17 @@
-# fly-execa [![npm package][npm-ver-link]][npm-pkg-link] [![][travis-badge]][travis-link]
+# fly-shell [![npm package][npm-ver-link]][npm-pkg-link] [![][travis-badge]][travis-link]
 > Execute shell commands with Fly
 
 ## Install
 
 ```a
-npm install --save-dev fly-execa
+npm install --save-dev fly-shell
 ```
 
 ## API
 
-`fly-execa` uses [execa](https://github.com/sindresorhus/execa) as its `child_process` wrapper. This means it has the same options as [child_process.exec](https://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback) and shares `execa`'s [additional options](https://github.com/sindresorhus/execa#options).
+`fly-shell` uses [execa](https://github.com/sindresorhus/execa) as its `child_process` wrapper. This means it has the same options as [child_process.exec](https://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback) and shares `execa`'s [additional options](https://github.com/sindresorhus/execa#options).
 
-### .execa(command, [options])
+### .shell(command, [options])
 
 #### command
 Type: `string`<br>
@@ -37,10 +37,10 @@ Instances of `$file` will be replaced by the file's path.
 ```js
 exports.default = function * () {
   yield this.source('src/*.js')
-    .execa('cat $file')
-    //=> fly-execa: console.log('this is src/a.js')
-    //=> fly-execa: console.log('this is src/b.js')
-    //=> fly-execa: console.log('this is src/c.js')
+    .shell('cat $file')
+    //=> fly-shell: console.log('this is src/a.js')
+    //=> fly-shell: console.log('this is src/b.js')
+    //=> fly-shell: console.log('this is src/c.js')
     .dist('dist');
 }
 ```
@@ -56,8 +56,8 @@ Instances of `$file` will be replaced by the glob:
 ```js
 exports.default = function * () {
   yield this.source('src/*.js')
-    .execa('cat $file', {glob: true})
-    //=> fly-execa: 
+    .shell('cat $file', {glob: true})
+    //=> fly-shell: 
     //=>     console.log('this is src/a.js')
     //=>     console.log('this is src/b.js')
     //=>     console.log('this is src/c.js')
@@ -72,7 +72,7 @@ Of course, command arguments may be passed within your [command string](#command
 ```js
 exports.default = function * () {
   yield this.source('src')
-    .execa('ls -alh $file', {glob: true})
+    .shell('ls -alh $file', {glob: true})
     .dist('dist');
 }
 ```
@@ -81,7 +81,7 @@ exports.default = function * () {
 
 MIT © [Luke Edwards](https://lukeed.com)
 
-[npm-pkg-link]: https://www.npmjs.org/package/fly-execa
-[npm-ver-link]: https://img.shields.io/npm/v/fly-execa.svg?style=flat-square
-[travis-link]:  https://travis-ci.org/lukeed/fly-execa
-[travis-badge]: http://img.shields.io/travis/lukeed/fly-execa.svg?style=flat-square
+[npm-pkg-link]: https://www.npmjs.org/package/fly-shell
+[npm-ver-link]: https://img.shields.io/npm/v/fly-shell.svg?style=flat-square
+[travis-link]:  https://travis-ci.org/lukeed/fly-shell
+[travis-badge]: http://img.shields.io/travis/lukeed/fly-shell.svg?style=flat-square

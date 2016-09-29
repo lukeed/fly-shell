@@ -1,9 +1,9 @@
-var shell = require('execa').shell;
+var execa = require('execa').shell;
 
-var NAME = 'fly-execa';
+var NAME = 'fly-shell';
 
 module.exports = function () {
-	this.execa = function () {
+	this.shell = function () {
 		var self = this;
 		var args = [].slice.call(arguments);
 		var opts = args.pop() || {};
@@ -14,7 +14,7 @@ module.exports = function () {
 			// use file or glob
 			var c = cmd.replace(/\$file/gi, str);
 			// pass all args to execa
-			return shell.apply(self, [c, args, opts]).then(function (res) {
+			return execa.apply(self, [c, args, opts]).then(function (res) {
 				self.log(NAME + ':' + (isGlob ? '\n\t' : ' ') + res.stdout.replace(/\n/g, isGlob ? '\n\t' : '\n'));
 			}).catch(function (err) {
 				self.emit('plugin_error', {
