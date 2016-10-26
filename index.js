@@ -2,6 +2,7 @@
 
 const format = require('path').format;
 const execa = require('execa').shell;
+
 const NAME = 'fly-shell';
 
 module.exports = function () {
