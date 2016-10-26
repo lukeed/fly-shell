@@ -1,28 +1,39 @@
-# fly-shell [![npm package][npm-ver-link]][npm-pkg-link] [![][travis-badge]][travis-link]
+# fly-shell [![][travis-badge]][travis-link]
+
 > Execute shell commands with Fly
 
 ## Install
 
-```a
+```
 npm install --save-dev fly-shell
 ```
 
 ## API
 
-`fly-shell` uses [execa](https://github.com/sindresorhus/execa) as its `child_process` wrapper. This means it has the same options as [child_process.exec](https://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback) and shares `execa`'s [additional options](https://github.com/sindresorhus/execa#options).
-
 ### .shell(command, [options])
+
+Both parameters are optional, but at least one must be present. Additionally, a `command` **is** required
 
 #### command
 Type: `string`<br>
-Any occurrences of `$file` will be replaced with the the relevant filepath or glob pattern.
+
+The shell command to run. You may also use [`options.cmd`](#optionscmd)
+
+During execution, any occurrences of `$file` or `$glob` will be replaced with the the relevant filepath or glob pattern.
 
 #### options
 Type: `object`<br>
-See [child_process.exec](https://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback) and [execa](https://github.com/sindresorhus/execa#options) for more info.
+
+`fly-shell` uses [execa](https://github.com/sindresorhus/execa) as its `child_process` wrapper. This means it has the same options as [child_process.exec](https://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback) and shares `execa`'s [additional options](https://github.com/sindresorhus/execa#options).
+
+#### options.cmd
+Type: `string`<br>
+
+Same as [`command`](#command). You may want to use this if you only want to specify an `options` object.
 
 #### options.glob
 Type: `boolean`<br>
+
 If the command should use the glob pattern within `source()`, you must set this to `true` or `1`. See [here](#iterate-once-per-glob) for example.
 
 
@@ -49,8 +60,6 @@ exports.default = function * () {
 
 You can use the current glob within your shell command.
 
-> **Note:** Currently, only one glob pattern is supported.
-
 Instances of `$file` will be replaced by the glob:
 
 ```js
@@ -62,6 +71,19 @@ exports.default = function * () {
     //=>     console.log('this is src/b.js')
     //=>     console.log('this is src/c.js')
     .dist('dist');
+
+  yield this.source(['src/*.js', 'src/*.css'])
+    .shell({
+      cmd: 'cat $glob', 
+      glob: true
+    })
+    //=> fly-shell: 
+    //=>     console.log('this is src/a.js')
+    //=>     console.log('this is src/b.js')
+    //=>     console.log('this is src/c.js')
+    //=>     body{margin:0;}header{color:black}
+    //=>     .hero{width:100%;height:400px}
+    .dist('dist');
 }
 ```
 
@@ -72,7 +94,7 @@ Of course, command arguments may be passed within your [command string](#command
 ```js
 exports.default = function * () {
   yield this.source('src')
-    .shell('ls -alh $file', {glob: true})
+    .shell('ls -alh $file')
     .dist('dist');
 }
 ```
@@ -81,7 +103,5 @@ exports.default = function * () {
 
 MIT © [Luke Edwards](https://lukeed.com)
 
-[npm-pkg-link]: https://www.npmjs.org/package/fly-shell
-[npm-ver-link]: https://img.shields.io/npm/v/fly-shell.svg?style=flat-square
 [travis-link]:  https://travis-ci.org/lukeed/fly-shell
 [travis-badge]: http://img.shields.io/travis/lukeed/fly-shell.svg?style=flat-square
