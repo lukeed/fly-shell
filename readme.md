@@ -46,8 +46,8 @@ You can apply a command to each file of your `glob` match.
 Instances of `$file` will be replaced by the file's path.
 
 ```js
-exports.default = function * () {
-  yield this.source('src/*.js')
+exports.default = function * (fly) {
+  yield fly.source('src/*.js')
     .shell('cat $file')
     //=> fly-shell: console.log('this is src/a.js')
     //=> fly-shell: console.log('this is src/b.js')
@@ -63,8 +63,8 @@ You can use the current glob within your shell command.
 Instances of `$file` will be replaced by the glob:
 
 ```js
-exports.default = function * () {
-  yield this.source('src/*.js')
+exports.default = function * (fly) {
+  yield fly.source('src/*.js')
     .shell('cat $file', {glob: true})
     //=> fly-shell: 
     //=>     console.log('this is src/a.js')
@@ -72,7 +72,7 @@ exports.default = function * () {
     //=>     console.log('this is src/c.js')
     .dist('dist');
 
-  yield this.source(['src/*.js', 'src/*.css'])
+  yield fly.source(['src/*.js', 'src/*.css'])
     .shell({
       cmd: 'cat $glob', 
       glob: true
@@ -92,8 +92,8 @@ exports.default = function * () {
 Of course, command arguments may be passed within your [command string](#command).
 
 ```js
-exports.default = function * () {
-  yield this.source('src')
+exports.default = function * (fly) {
+  yield fly.source('src')
     .shell('ls -alh $file')
     .dist('dist');
 }
