@@ -5,13 +5,10 @@ const execa = require('execa').shell;
 
 const NAME = 'fly-shell';
 
-module.exports = function () {
-	const setError = msg => this.emit('plugin_error', {
-		error: msg,
-		plugin: NAME
-	});
+module.exports = function (fly) {
+	const setError = str => fly.emit('plugin_error', {error: str, plugin: NAME});
 
-	this.plugin('shell', {every: 0}, function * (files, cmd, opts) {
+	fly.plugin('shell', {every: 0}, function * (files, cmd, opts) {
 		opts = opts || {};
 
 		if (typeof cmd !== 'string') {
